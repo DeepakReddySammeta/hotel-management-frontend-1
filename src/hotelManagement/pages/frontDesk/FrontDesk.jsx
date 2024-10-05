@@ -1,77 +1,191 @@
-import  { useState } from "react";
-import BookingGrid from "./BookingGrid";
-import FilterControls from "./FilterControls";
-// import DatePicker from "react-datepicker"; // For the date picker
-import { frontDeskBookingData } from "../../modules/mockData";
+import ReactPaginate from 'react-paginate';
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import YearSelector from '../../sharedComponents/YearSelector';
+import {
+  generateDates,
+  generateDummyData,
+  generateMonthNames,
+  getRandomNumber,
+  OCCUPANCY_STATUS,
+  statusDetails
+} from "../../../utils/helper";
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+import './FrontDesk.css';
 
 const FrontDesk = () => {
-  const [filter, setFilter] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPerPage, setPerPage] = useState(6);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [currentStatus, setCurrentStatus] = useState(OCCUPANCY_STATUS.BOOKINGS);
+  const [months, setMonths] = useState([]);
+  const [days, setDays] = useState([]);
+  const [bookingDetails, setBookingDetails] = useState([]);
+  const spansRef = useRef({});
+  const randomColors = ['rgb(45 212 191)', "rgb(134 25 143)", "rgb(248 113 113)", "rgb(250 204 21)", "rgb(96 165 250)", "rgb(147 51 234)"];
+  const randomBgColors = ['rgba(45, 212, 191, 0.1)', "rgba(134, 25, 143, 0.1)", "rgba(248, 113, 113, 0.1)", "rgba(250, 204, 21, 0.1)", "rgba(96, 165, 250, 0.1)", "rgba(147, 51, 234, 0.1)"];
+  const perPageOptions = [6, 12, 18, 24, 30];
 
-  // Filter bookings based on selected status
-  const filteredBookings = filter
-    ? frontDeskBookingData.filter((booking) => booking.status === filter)
-    : frontDeskBookingData;
+  const setRef = (roomNumber, index, el) => {
+    const key = `${roomNumber}-${index}`;
+    spansRef.current[key] = el;
+  };
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    setSelectedYear(currentYear);
+    setSelectedMonth(currentMonth);
+    setMonths(generateMonthNames());
+    setDays(generateDates(currentMonth, currentYear));
+    const queryParams = new URLSearchParams(location.search);
+    queryParams.set('type', currentStatus);
+    navigate({
+      pathname: location.pathname,
+      search: `?${queryParams.toString()}`,
+    }, { replace: true });
+  }, []);
+
+  useEffect(() => {
+    santizeDummyData();
+  }, [selectedMonth, selectedYear, currentStatus, currentPage, currentPerPage])
+
+
+  const santizeDummyData = () => {
+    const bookingDummyData = generateDummyData(selectedYear, selectedMonth);
+    const dummyData = bookingDummyData.map((data) => {
+      return {
+        ...data,
+        bookings: data.bookings.map((bookingValue) => {
+          const cloneBookingValue = {...bookingValue};
+          cloneBookingValue.checkout = cloneBookingValue.checkin >= 28 ? 2 : cloneBookingValue.checkout;
+          cloneBookingValue.checkout = cloneBookingValue.checkin > cloneBookingValue.checkout ? days[days.length - 1] : cloneBookingValue.checkout; 
+          const getSelectedRefValue = getLineTopValue(data.roomNumber, cloneBookingValue.checkin, cloneBookingValue.checkout);
+          const randomNumber = getRandomNumber();
+          return {
+            ...cloneBookingValue,
+            color: randomColors[randomNumber],
+            backgroundColor: randomBgColors[randomNumber],
+            left: getSelectedRefValue?.left,
+            width: getSelectedRefValue?.width
+          }
+        })
+      }
+    });
+    setBookingDetails([...dummyData]);
+  }
+
+
+
+  const onClickMonth = (monthIndex) => {
+    setSelectedMonth(monthIndex + 1);
+    setDays(generateDates(monthIndex + 1, selectedYear));
+  }
+
+  const getLineTopValue = (roomNumber, checkIn, checkOut) => {
+    const startIndex = checkIn - (currentStatus === OCCUPANCY_STATUS.CHECK_IN ? 1 : 0);
+    const endIndex = checkOut + 1;
+    const key = `${roomNumber}-${startIndex}`;
+    const span = spansRef.current[key];
+    if (span) {
+          const leftPosition = span.getBoundingClientRect().left;
+          return {
+            left: `${leftPosition - 285}px`,
+            width: `${(endIndex - startIndex - 1)*37}px`
+          }
+      }
+  };
+
+  const onClickStatus = (name) => {
+    const queryParams = new URLSearchParams(location.search);
+    queryParams.set('type', name);
+    navigate({
+      pathname: location.pathname,
+      search: `?${queryParams.toString()}`,
+    }, { replace: true });
+    setCurrentStatus(name);
+  }
+
+  const handlePageClick = ($event) => {
+    setCurrentPage($event.selected);
+  }
+
 
   return (
-    <div className="p-4">
-      {/* Filter Controls */}
-      <FilterControls setFilter={setFilter} />
-
-      {/* Grid for months and days */}
-      <div className="overflow-x-auto">
-        <div className="grid grid-cols-12 gap-4">
-          {/* Months Row */}
-          {months.map((month, index) => (
-            <div key={index} className="col-span-1 text-center font-bold">
-              {month}
-            </div>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-12 gap-4">
-          {/* Days Row (assuming 31 days for simplicity) */}
-          {[...Array(31).keys()].map((day) => (
-            <div key={day} className="col-span-1 text-center">
-              {day + 1}
-            </div>
-          ))}
-        </div>
-
-        {/* Booking Blocks */}
-        <div className="relative mt-4">
-          {filteredBookings.map((booking, index) => {
-            const startDay = new Date(booking.startDate).getDate();
-            const endDay = new Date(booking.endDate).getDate();
-            const duration = endDay - startDay + 1;
-
-            return (
-              <div
-                key={index}
-                className={`absolute top-${index * 20} left-${startDay} col-span-${duration} rounded-lg`}
-              >
-                <BookingGrid booking={booking} />
-              </div>
-            );
-          })}
-        </div>
+    <div className="date-container bg-white">
+      <div className="year-container">
+        <div className="me-5">{statusDetails.map((status, index) => (<button className={`${status.className} ${currentStatus === status.name ?  status.activeColor : '' }`} key={status.name + index} onClick={() => onClickStatus(status.name)}>{status.name}</button>))}</div>
+        <label><b>Select Year: </b>&nbsp;&nbsp;</label>
+        <YearSelector year={selectedYear} onChangeYear={($event) => setSelectedYear($event)} />
       </div>
+      <div className="months-container">
+        {months?.map((month, index) => (<div className={`month-content ${index + 1 === selectedMonth ? 'active' : ''}`} key={month + index} onClick={() => onClickMonth(index)}>{month}</div>))}
+      </div>
+      {/* DAYS-CONTAINER */}
+      <div className="days-container">
+        <table>
+          <thead>
+            <tr>
+              <th className="room-header"></th>
+              {days?.map((day, index) => (<th key={day+index+'th'}>{day}</th>))}
+            </tr>
+          </thead>
+          <tbody>
+            {bookingDetails.slice((Number(currentPage) * currentPerPage), (Number(currentPage) * currentPerPage) + currentPerPage).map((room) => {
+              return(
+                <tr key={room.id}>
+                  { currentStatus === OCCUPANCY_STATUS.CHECK_IN && <td>{room.roomNumber}</td>}
+                  {days?.map((day, index) => (
+                    <td
+                      key={day + index + 'td'}
+                      className={ index === days.length - 1 ? 'last-child' : ''}
+                      ref={(el) => setRef(room.roomNumber, index, el)}
+                    ></td>
+                  ))}
+                  {room.bookings.map((bookingValue, index) => {
+                    return (<div key={bookingValue.name + index} className="cover-div" style={{ left: bookingValue.left, width: bookingValue.width, color: bookingValue.color, backgroundColor: bookingValue.backgroundColor}} title={bookingValue?.name}>
+                      { bookingValue.name }
+                    </div>)
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+      {/* PAGINATION_CONTAINER */}
+      <div className="pagination-container">
+        <select className="per-page" value={currentPerPage} onChange={($event) => setPerPage($event.target.value)}>
+            {perPageOptions.map((option, index) => (<option key={option + index} value={option}>{option}</option>))}
+        </select>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={bookingDetails?.length}
+          previousLabel="<"
+          renderOnZeroPageCount={null}
+          containerClassName="pagination"
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          activeClassName="active"
+          forcePage={currentPage}
+        />
+      </div>
+      {/* <CustomModal /> */}
     </div>
-  );
+  )
 };
 
 export default FrontDesk;

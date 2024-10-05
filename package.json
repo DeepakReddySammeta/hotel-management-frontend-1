@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "deploy": "aws s3 sync dist/ s3://front-end-apsen",
+    "prod": "npm run build && npm run deploy",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -32,6 +34,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
     "react-leaflet": "^4.2.1",
+    "react-paginate": "^8.2.0",
     "react-redux": "^8.1.1",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.12.1",

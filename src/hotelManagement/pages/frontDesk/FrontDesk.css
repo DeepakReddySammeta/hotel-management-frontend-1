@@ -1,0 +1,121 @@
+.date-container {
+  padding: 20px;
+}
+
+.year-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 20px;
+}
+
+.months-container {
+  display: flex;
+}
+
+.months-container .month-content {
+  width: 8%;
+  text-align: center;
+  padding: 10px 5px;
+}
+
+.months-container .month-content.active {
+  border: 1px solid #001844;
+  font-weight: bold;
+}
+
+.months-container .month-content:hover {
+  cursor: pointer;
+  border: 1px solid #001844;
+}
+
+.cover-div {
+  position: absolute;
+  z-index: 1;
+  border-radius: 5px;
+  padding: 3px 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-size: 16;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.days-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.days-container table thead tr th,
+.days-container table tbody tr td {
+  width: 45px;
+  height: 50px;
+}
+
+.days-container table {
+  position: relative;
+}
+
+.days-container table thead tr th:first-child,
+.days-container table tbody tr td:first-child {
+  width: 80px;
+}
+
+.days-container table tbody tr td:not(:first-child) {
+  border-left: 1px solid rgb(228, 228, 228);
+}
+
+.days-container table tbody tr td.last-child {
+  border-right: 1px solid rgb(228, 228, 228);
+  ;
+}
+
+.days-container table tbody tr td {
+  padding: 10px;
+}
+
+.days-container table thead tr th {
+  padding-bottom: 15px;
+}
+
+.pagination-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination-container .per-page {
+  border: 1px solid gray;
+  padding: 3px 5px;
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+.pagination-container .per-page:focus {
+  border: 1px solid gray !important;
+}
+
+.pagination {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.active .page-link {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}

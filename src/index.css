@@ -30,3 +30,77 @@ p {
 .topHeight{
   top: 55.1%;
 }
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  border: 1px solid gray;
+  color: black;
+  font-size: 18px;
+  text-align: start;
+  padding: 5px 20px;
+  width: 250px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-content-container {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 250px;
+  z-index: 1;
+}
+
+.dropdown-content-container .dropdown-navigations {
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  border: 1px solid gray;
+  border-top: none;
+  border-bottom: none;
+}
+
+.dropdown-content-container .dropdown-navigations .year-range-label {
+  width: 100%;
+}
+
+.dropdown-content-container .dropdown-navigations span:first-child, .dropdown-content-container .dropdown-navigations span:last-child {
+  cursor: pointer;
+}
+
+.dropdown-content-container .dropdown-content-years {
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  border: 1px solid gray;
+  border-top: none;
+  display: grid;
+  text-align: center;
+  grid-template-columns: repeat(3, auto);
+  gap: 5px;
+  padding: 10px;
+  z-index: 2;
+}
+
+.dropdown-content-container .dropdown-content-years div {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-content-container .dropdown-content-years div.active {
+  border: 1px solid rgb(52, 135, 184);
+}
+
+.dropdown:hover .dropdown-content-container {
+  display: block;
+}
