@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 // import Category from "../components/Home/Category";
 // import PriceWithTaxCard from "../components/Home/PriceWithTaxCard";
 // import { useQuery } from "@tanstack/react-query";
-import { API } from "../backend";
+// import { API } from "../backend";
 // import { useParams } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { useLocation } from "react-router-dom";
 import HomePageSkeleton from "../components/skeletonLoading/HomePageSkeleton";
 import ListingPreviewCard from "../components/Home/ListingPreviewCard";
@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 // import { useGetSubCatListing } from "../hooks/useGetSubCatListing";
 // import SkeletonLoadingCards from "../components/skeletonLoading/SkeletonLoadingCards";
 import { FadeLoader } from "react-spinners";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
+import { OUR_ROOMS_HEADING } from "../hotelManagement/modules/headings";
 
 const RoomsList = () => {
   const [roomTypes, setRoomTypes] = useState([]);
@@ -82,21 +83,21 @@ const RoomsList = () => {
   //   ],
   // ];
   // fetching all listing data
-const getAllRoomTypes = async () => {
-  setLoading(true); // Start loading state
-  try {
-    const res = await axios.get(`${API}room/public`);
-    console.log("ALL ROOMS", { res });
+// const getAllRoomTypes = async () => {
+//   setLoading(true); // Start loading state
+//   try {
+//     const res = await axios.get(`${API}room/public`);
+//     console.log("ALL ROOMS", { res });
 
-    setRoomTypes(res.data);
-    // toast.success("Room types fetched successfully!");
-  } catch (error) {
-    console.error("Error fetching room types:", {error});
-    toast.error("Failed to fetch room types. Please try again.");
-  } finally {
-    setLoading(false); // Stop loading state
-  }
-};
+//     setRoomTypes(res.data);
+//     // toast.success("Room types fetched successfully!");
+//   } catch (error) {
+//     console.error("Error fetching room types:", {error});
+//     toast.error("Failed to fetch room types. Please try again.");
+//   } finally {
+//     setLoading(false); // Stop loading state
+//   }
+// };
 
   // const handleScrollTracking = () => {
   //   const scrollPosition = window.scrollY;
@@ -160,7 +161,7 @@ console.log({userFilters})
   return (
     <main className="max-w-screen-2xl mb-8 xl:px-10 px-6  sm:px-16 mx-auto">
       <h1 className="text-center font-bold text-xl text-[#002d72] py-4">
-        OUR ROOMS
+        {OUR_ROOMS_HEADING}
       </h1>
       {/* <section
         className={` pt-8 grid md:grid-cols-12 gap-5 bg-white sticky top-16 z-30 ${

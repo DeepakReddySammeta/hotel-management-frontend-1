@@ -9,14 +9,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import hotelLogo from "../../assets/logos/aspenLogo.png";
 import { useSelector, useDispatch } from "react-redux";
-import { customerLogOut, fetchCustomerData } from "../../hotelManagement/redux/actions/customerActions";
+import {
+  customerLogOut,
+  fetchCustomerData,
+} from "../../hotelManagement/redux/actions/customerActions";
 import toast from "react-hot-toast";
+import { GUEST_NAVBAR_ITEMS } from "../../hotelManagement/modules/constants";
+import { HOTEL_NAME_HEADING } from "../../hotelManagement/modules/headings";
 
 function Navbar() {
   const [hideMenu, setHideMenu] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dispatch = useDispatch();
-  let customer = useSelector((state) => state.admin.customer.customerDetails);
+  const customer = useSelector((state) => state.admin.customer.customerDetails);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
@@ -45,16 +50,20 @@ function Navbar() {
   };
 
   const handleOptionClick = (option) => {
-if (option === "Logout") {
-  // Perform the logout process
-  dispatch(customerLogOut()); // Dispatch the customer logout action
-  // navigate("/admin/sign-in"); // Redirect to sign-in page after logout
-  toast.success("Successfully logged out!"); // Optional: Show a success message
-} else {
-  console.log(option);
-}
-setDropdownOpen(false); 
+    if (option === "Logout") {
+      dispatch(customerLogOut());
+      toast.success("Successfully logged out!");
+    } else {
+      console.log(option);
+    }
+    setDropdownOpen(false);
   };
+
+  const DROPDOWN_OPTIONS = [
+    { title: "My Bookings", action: () => handleOptionClick("My Bookings") },
+    { title: "Profile", action: () => handleOptionClick("Profile") },
+    { title: "Logout", action: () => handleOptionClick("Logout") },
+  ];
 
   return (
     <header className="bg-white bg-opacity-90 backdrop-blur-md shadow-md sticky top-0 z-50">
@@ -62,12 +71,12 @@ setDropdownOpen(false);
         {/* Logo on the left */}
         <div
           className="flex pointer"
-          title="ASPEN GRAND HOTELS"
+          title={HOTEL_NAME_HEADING}
           onClick={() => navigate("/")}
         >
           <img src={hotelLogo} alt="Hotel logo" className="w-14 h-14 mr-4" />
           <h2 className="text-2xl my-auto font-bold text-[#001f53]">
-            ASPEN GRAND HOTELS
+            {HOTEL_NAME_HEADING}
           </h2>
         </div>
 
@@ -83,88 +92,45 @@ setDropdownOpen(false);
         <nav
           className={`${
             hideMenu ? "hidden" : "block"
-          } absolute top-16 left-0 w-full lg:static lg:block lg:w-auto`}
+          } absolute top-16 left-0 w-full lg:static lg:block lg:w-auto ${!hideMenu ? "bg-white" : ""}`}
         >
-          <ul className="flex flex-col bg-white lg:flex-row lg:items-center lg:gap-6 font-bold">
-            <li className="p-2 lg:p-0">
-              <Link
-                className={`${
-                  pathname === "/" ? "text-blue-600" : "text-black"
-                } hover:text-blue-600`}
-                to="/"
-                onClick={() => setHideMenu(true)}
-              >
-                Home
-              </Link>
-            </li>
-            <li className="p-2 lg:p-0">
-              <Link
-                className={`${
-                  pathname.includes("rooms") ? "text-blue-600" : "text-black"
-                } hover:text-blue-600`}
-                to="/roomsList"
-                onClick={() => setHideMenu(true)}
-              >
-                Rooms
-              </Link>
-            </li>
-            <li className="p-2 lg:p-0">
-              <Link
-                className={`${
-                  pathname === "/amenities" ? "text-blue-600" : "text-black"
-                } hover:text-blue-600`}
-                to="/amenities"
-                onClick={() => setHideMenu(true)}
-              >
-                Amenities
-              </Link>
-            </li>
-            <li className="p-2 lg:p-0">
-              <Link
-                className={`${
-                  pathname === "/gallery" ? "text-blue-600" : "text-black"
-                } hover:text-blue-600`}
-                to="/gallery"
-                onClick={() => setHideMenu(true)}
-              >
-                Gallery
-              </Link>
-            </li>
+          <ul className="flex flex-col  lg:flex-row lg:items-center lg:gap-6 font-bold">
+            {GUEST_NAVBAR_ITEMS.map(({ title, path }) => (
+              <li key={path} className="p-2 lg:p-0">
+                <Link
+                  className={`${
+                    pathname === path ? "text-blue-600" : "text-black"
+                  } hover:text-blue-600`}
+                  to={path}
+                  onClick={() => setHideMenu(true)}
+                >
+                  {title}
+                </Link>
+              </li>
+            ))}
 
             {/* Conditional rendering for Log In or User Dropdown */}
             {customer ? (
               <li className="relative p-2 lg:p-0" ref={dropdownRef}>
-                {" "}
-                {/* Set ref here */}
                 <button
                   onClick={handleDropdownToggle}
                   className="flex items-center text-black hover:text-blue-600 focus:outline-none"
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   {customer.name}{" "}
-                  <FontAwesomeIcon icon={faCaretDown} className="ml-1" />{" "}
-                  {/* Dropdown icon */}
+                  <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
                 </button>
                 {dropdownOpen && (
                   <ul className="absolute right-0 w-40 bg-gray-200 ml-8 mt-5 shadow-lg rounded-lg mt-1">
-                    <li
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleOptionClick("My Bookings")}
-                    >
-                      My Bookings
-                    </li>
-                    <li
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleOptionClick("Profile")}
-                    >
-                      Profile
-                    </li>
-                    <li
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleOptionClick("Logout")}
-                    >
-                      Logout
-                    </li>
+                    {DROPDOWN_OPTIONS.map(({ title, action }) => (
+                      <li
+                        key={title}
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={action}
+                      >
+                        {title}
+                      </li>
+                    ))}
                   </ul>
                 )}
               </li>
@@ -176,7 +142,7 @@ setDropdownOpen(false);
                       ? "text-blue-600"
                       : "text-black"
                   } hover:text-blue-600`}
-                  to="/admin/sign-in"
+                  to="/sign-in"
                   onClick={() => setHideMenu(true)}
                 >
                   Log In

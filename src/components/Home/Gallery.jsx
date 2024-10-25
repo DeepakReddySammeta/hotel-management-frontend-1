@@ -11,6 +11,7 @@ import image5 from "../../assets/aspengrandhotellaportepictures/Dinning.jpg";
 import image2 from "../../assets/aspengrandhotellaportepictures/ex1.jpg";
 import image8 from "../../assets/aspengrandhotellaportepictures/fd.jpg";
 import image10 from "../../assets/aspengrandhotellaportepictures/pool2.jpg";
+import { GALLERY_HEADING } from "../../hotelManagement/modules/headings";
 
 
 
@@ -78,7 +79,7 @@ function Gallery() {
     <section className="py-10">
       <div className="container mx-auto">
         <h1 className="font-bold text-xl text-center text-[#002d72]">
-          GALLERY
+          {GALLERY_HEADING}
         </h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 py-4 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {rooms.map((item) => (

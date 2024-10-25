@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { AiFillStar } from "react-icons/ai";
+import { NO_ROOMS_AVAILABLE_MESSAGE, OUR_ROOMS_HEADING } from "../../hotelManagement/modules/headings";
 
 const HomePageRoomsList = () => {
   const [roomTypes, setRoomTypes] = useState([]);
@@ -44,16 +45,14 @@ const HomePageRoomsList = () => {
   return (
     <main className="max-w-screen-2xl mb-8 xl:px-10 px-6 sm:px-16 mx-auto">
       <h1 className="text-center font-bold text-xl text-[#002d72] py-4">
-        OUR ROOMS
+        {OUR_ROOMS_HEADING}
       </h1>
       <section className="py-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mx-auto gap-x-7 gap-y-10">
         {roomTypes?.length ? (
           roomTypes.map((roomType) => (
             <div
               key={roomType._id}
-              onClick={() =>
-                handleNavigation(roomType._id)
-              }
+              onClick={() => handleNavigation(roomType._id)}
               className={`flex flex-col gap-3 rounded-xl w-full sm:max-w-[300px] md:w-full mx-auto ${
                 !roomType?.availableStatus ? "cursor-not-allowed" : ""
               }`}
@@ -96,7 +95,7 @@ const HomePageRoomsList = () => {
         ) : (
           <div className="col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-4 2xl:col-span-5 flex justify-center items-center">
             <p className="text-lg font-semibold text-gray-500 text-center">
-              No room types available at the moment. Please check back later!
+              {NO_ROOMS_AVAILABLE_MESSAGE}
             </p>
           </div>
         )}

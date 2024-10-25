@@ -1,6 +1,8 @@
 import  { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { ADDITIONAL_INFORMATION } from "../../hotelManagement/modules/headings";
+import { ADDITIONAL_INFORMATION_ACCORDION_DATA } from "../../hotelManagement/modules/constants";
 
 const AdditionalInformation = () => {
   const [openAccordion, setOpenAccordion] = useState(null);
@@ -9,48 +11,12 @@ const AdditionalInformation = () => {
     setOpenAccordion(openAccordion === index ? null : index);
   };
 
-  const accordionData = [
-    {
-      title: "Additional Amenities",
-      content: [
-        "Complimentary coffee and tea supplies",
-        "Mini refrigerator",
-        "In-room safe",
-        "Work desk with lamp",
-        "Iron and ironing board",
-        "Smoke detectors",
-        "Sound system",
-        "Stereo or radio available",
-      ],
-    },
-    {
-      title: "Accessible Guest Room Features",
-      content: [
-        "Wide doorways",
-        "Accessible bathroom facilities",
-        "Visual and audible alarms",
-        "Accessible work desk",
-        "Roll-in shower",
-      ],
-    },
-    {
-      title: "Available by Request",
-      content: [
-        "Extra pillows and blankets",
-        "Baby crib",
-        "Microwave",
-        "Pet-friendly options",
-        "Laundry service",
-      ],
-    },
-  ];
-
   return (
     <div className="max-w-7xl mx-auto my-12">
       <h1 className="font-bold text-2xl text-[#002d72] py-2 text-center">
-        Additional information
+        {ADDITIONAL_INFORMATION}
       </h1>
-      {accordionData.map((item, index) => (
+      {ADDITIONAL_INFORMATION_ACCORDION_DATA.map((item, index) => (
         <div key={index} className="border-b">
           <button
             onClick={() => toggleAccordion(index)}

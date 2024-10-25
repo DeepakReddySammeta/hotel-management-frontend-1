@@ -1,4 +1,5 @@
 import room3 from "../../assets/aspengrandhotellaportepictures/pool2.jpg";
+import { AMENITIES_DESCRIPTION_EXPLORE_NOW_BUTTON, AMENITIES_DESCRIPTION_HEADING, AMENITIES_DESCRIPTION_PARAGRAPH } from "../../hotelManagement/modules/headings";
 
 function AmenitiesDescription() {
   return (
@@ -9,16 +10,14 @@ function AmenitiesDescription() {
             ASPEN GRAND HOTELS
           </h1> */}
           <p className="mt-4 text-gray-700 text-2xl font-extrabold">
-            Every Detail Matters.
+            {AMENITIES_DESCRIPTION_HEADING}
           </p>
           <p className="mt-4 text-gray-700">
-            Transforming Stays into Lasting Memories. Your Needs, Our
-            Commitment. Elevating Your Stay: Expert Hotel Management for
-            Unforgettable Experiences
+            {AMENITIES_DESCRIPTION_PARAGRAPH}
           </p>
           <div className="mt-6">
             <button className="inline bg-[#002d72] text-white py-2 px-6 rounded-lg hover:bg-[#0056b3]">
-              Explore Now
+              {AMENITIES_DESCRIPTION_EXPLORE_NOW_BUTTON}
             </button>
           </div>
         </div>

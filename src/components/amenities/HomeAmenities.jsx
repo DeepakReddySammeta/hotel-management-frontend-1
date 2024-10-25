@@ -10,6 +10,7 @@ import AtThisHotel from './AtThisHotel';
 import IncludedAmenitiesList from './IncludedAmenitiesList';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AmenitiesDescription from "./AmenitiesDescription";
+import { HOME_AMENITIES_HEADING } from "../../hotelManagement/modules/headings";
 
 function HomeAmenities() {
   
@@ -32,7 +33,7 @@ function HomeAmenities() {
       <AmenitiesDescription />
       <div className="bg-gray-100 py-10 px-6">
         <h2 className="text-xl text-[#002d72] font-bold text-left px-9 mb-8">
-          SAFETY MEASURES WITH EVERY STAY
+          {HOME_AMENITIES_HEADING}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
           {safetyAmenities.map((amenity, index) => (

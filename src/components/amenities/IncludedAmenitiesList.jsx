@@ -1,64 +1,27 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCoffee,
-  faJugDetergent,
-  faTv,
-  faLaptop,
-  faWind,
-  faBroom,
-  faDumbbell,
-  faWifi,
-  faBriefcase,
-  faKitchenSet,
-  faCar,
-  faCampground,
-  faUtensils,
-  faShirt,
-  faSwimmingPool,
-  faConciergeBell,
-} from "@fortawesome/free-solid-svg-icons";
+import { INCLUDED_WITH_EVERY_STAY_HEADING } from "../../hotelManagement/modules/headings";
+import { AMENITIES_LIST_INCLUDED_WITH_STAY_SEPERATE_PAGE_LIST } from "../../hotelManagement/modules/constants";
 
 const IncludedAmenitiesList = () => {
-  const amenities = [
-    { icon: <FontAwesomeIcon icon={faCoffee} />, label: "Coffee maker" },
-    { icon: <FontAwesomeIcon icon={faJugDetergent} />, label: "Guest Laundry" },
-    { icon: <FontAwesomeIcon icon={faLaptop} />, label: "Work space" },
-    {
-      icon: <FontAwesomeIcon icon={faConciergeBell} />,
-      label: "24-hour Room Service",
-    },
-    { icon: <FontAwesomeIcon icon={faDumbbell} />, label: "Fitness Center" },
-    { icon: <FontAwesomeIcon icon={faBroom} />, label: "Daily housekeeping" },
-    { icon: <FontAwesomeIcon icon={faWind} />, label: "Air conditioning" },
-    { icon: <FontAwesomeIcon icon={faWifi} />, label: "Free Wi-Fi" },
-    { icon: <FontAwesomeIcon icon={faBriefcase} />, label: "Business Center" },
-    { icon: <FontAwesomeIcon icon={faKitchenSet} />, label: "Kitchen" }, // FontAwesome Kitchen icon
-    { icon: <FontAwesomeIcon icon={faShirt} />, label: "Washer" }, // FontAwesome Washer icon
-    { icon: <FontAwesomeIcon icon={faCar} />, label: "Free parking" }, // FontAwesome Car icon
-    { icon: <FontAwesomeIcon icon={faTv} />, label: "Television" },
-    { icon: <FontAwesomeIcon icon={faSwimmingPool} />, label: "Swimming Pool" },
-    { icon: <FontAwesomeIcon icon={faCampground} />, label: "Camp fire" }, // FontAwesome Campfire icon
-    {
-      icon: <FontAwesomeIcon icon={faUtensils} />,
-      label: "Outdoor dining area",
-    },
-  ];
-
   return (
     <>
       <div className="bg-gray-100 py-8 px-6">
         <h2 className="text-xl text-[#002d72] font-bold text-center px-9 mb-8">
-          INCLUDED WITH EVERY STAY
+          {INCLUDED_WITH_EVERY_STAY_HEADING}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          {amenities.map((amenity, index) => (
-            <div key={index} className="flex flex-col items-center">
-              <div className="text-2xl mb-2">{amenity.icon}</div>
-              <span className="lg:text-sm md:text-sm sm:text-base text-xs font-semibold">
-                {amenity.label}
-              </span>
-            </div>
-          ))}
+          {AMENITIES_LIST_INCLUDED_WITH_STAY_SEPERATE_PAGE_LIST.map(
+            (amenity, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <div className="text-2xl mb-2">
+                  <FontAwesomeIcon icon={amenity.icon} />{" "}
+                </div>
+                <span className="lg:text-sm md:text-sm sm:text-base text-xs font-semibold">
+                  {amenity.label}
+                </span>
+              </div>
+            )
+          )}
         </div>
       </div>
     </>

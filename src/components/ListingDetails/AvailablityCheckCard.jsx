@@ -10,7 +10,16 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API } from "../../backend";
 import toast from "react-hot-toast";
-
+import {
+  ADULTS,
+  ADULTS_AGE,
+  CHECK_IN_WITH_HYPHEN,
+  CHECK_Out,
+  CHILDREN,
+  CHILDREN_AGE,
+  FIND_ROOMS_BUTTON,
+  ROOMS,
+} from "../../hotelManagement/modules/headings";
 /* eslint-disable react/prop-types */
 const AvailablityCheckCard = () => {
   const calendarRef = useRef();
@@ -104,13 +113,13 @@ const AvailablityCheckCard = () => {
               >
                 <div className="px-3 py-3">
                   <p className="text-[10px] md:text-xs text-black font-semibold uppercase">
-                    check-in
+                    {CHECK_IN_WITH_HYPHEN}
                   </p>
                   <p className="text-sm text-[#222222]">{localStartDate}</p>
                 </div>
                 <div className="px-3 py-3 border-l border-[#b9b9b9]">
                   <p className="text-[10px] md:text-xs text-black font-semibold uppercase">
-                    checkout
+                    {CHECK_Out}
                   </p>
                   <p className="text-sm text-[#222222]">{localEndDate}</p>
                 </div>
@@ -125,7 +134,7 @@ const AvailablityCheckCard = () => {
             >
               <div className="flex flex-col">
                 <p className="text-[10px] md:text-xs text-black font-semibold uppercase">
-                  guests
+                  GUESTS
                 </p>
                 <p className="text-sm text-[#222222]">
                   {totalGuest} {totalGuest === 1 ? "guest" : "guests"}
@@ -146,7 +155,7 @@ const AvailablityCheckCard = () => {
                 onClick={checkAvailability}
                 className="p-3 bg-[#1b4281] hover:bg-[#002662] text-white text-sm font-medium rounded-md w-full sm:w-auto"
               >
-                Find Rooms
+                {FIND_ROOMS_BUTTON}
               </button>
             </div>
           </div>
@@ -160,7 +169,9 @@ const AvailablityCheckCard = () => {
               {/* Rooms Section */}
               <div className="flex items-center justify-between mb-3">
                 <span>
-                  <p className="text-base text-[#222222] font-medium">Rooms</p>
+                  <p className="text-base text-[#222222] font-medium">
+                    {ROOMS}
+                  </p>
                 </span>
                 <span className="flex items-center gap-2">
                   <button
@@ -186,8 +197,10 @@ const AvailablityCheckCard = () => {
               {/* Adults Section */}
               <div className="flex items-center justify-between mb-3">
                 <span>
-                  <p className="text-base text-[#222222] font-medium">Adults</p>
-                  <p className="text-sm text-[#313131]">Age 13+</p>
+                  <p className="text-base text-[#222222] font-medium">
+                    {ADULTS}
+                  </p>
+                  <p className="text-sm text-[#313131]">{ADULTS_AGE}</p>
                 </span>
                 <span className="flex items-center gap-2">
                   <button
@@ -214,9 +227,9 @@ const AvailablityCheckCard = () => {
               <div className="flex items-center justify-between">
                 <span>
                   <p className="text-base text-[#222222] font-medium">
-                    Children
+                    {CHILDREN}
                   </p>
-                  <p className="text-sm text-[#313131]">Ages 2-12</p>
+                  <p className="text-sm text-[#313131]">{CHILDREN_AGE}</p>
                 </span>
                 <span className="flex items-center gap-2">
                   <button
