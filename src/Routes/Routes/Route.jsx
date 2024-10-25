@@ -37,7 +37,7 @@ import HomeAmenities from "../../components/amenities/HomeAmenities";
 import PaymentSuccess from "../../hotelManagement/payments/PaymentSuccess";
 import PaymentFailed from "../../hotelManagement/payments/PaymentFailed";
 import HomePageRoomsList from "../../components/Home/HomePageRoomsList";
-
+import NotFound from "../errorHandling/NoRoute";
 
 const ListingHouseStepOneAddress = lazy(() =>
   import("../../Pages/ListingHouseStepOne/ListingHouseStepOneAddress")
@@ -573,6 +573,14 @@ const router = [
       },
     ],
   },
+  {
+    path: "*",
+    element: (
+      <ErrorBoundary>
+        <NotFound />
+      </ErrorBoundary>
+    ),
+  }
 ];
 
 export default router;
