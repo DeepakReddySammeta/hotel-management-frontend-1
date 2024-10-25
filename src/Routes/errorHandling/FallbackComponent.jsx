@@ -1,9 +1,27 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/no-unescaped-entities */
 import { useNavigate } from "react-router-dom";
+import lottie from "lottie-web";
+import error from "../../../public/animations/error.json";
+import { useEffect, useRef } from "react";
+
 
 const FallbackComponent = ({ errorMessage }) => {
   const navigate = useNavigate();
+
+    const animationContainer = useRef(null);
+
+    useEffect(() => {
+      const anim = lottie.loadAnimation({
+        container: animationContainer.current,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        animationData: error,
+      });
+
+      return () => anim.destroy(); // Cleanup animation on component unmount
+    }, []);
 
   const handleGoHome = () => {
     navigate("/")
@@ -11,13 +29,11 @@ const FallbackComponent = ({ errorMessage }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-white">
-      <div className="mb-4">
-        <img
-          src="/path/to/your/image.png"
-          alt="Error 404"
-          className="w-1/2 h-auto"
-        />
-      </div>
+      <div
+        onClick={handleGoHome}
+        ref={animationContainer}
+        className="cursor-pointer w-3/4 h-3/4 md:w-2/3 md:h-2/3 lg:w-1/2 lg:h-1/2 xl:w-1/3 xl:h-1/3"
+      />
       <h1 className="text-4xl font-bold text-gray-800">Oops!</h1>
       {errorMessage && (
         <p className="mt-2 text-lg text-red-600">{errorMessage}</p>
